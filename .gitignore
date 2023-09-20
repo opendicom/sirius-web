@@ -1,0 +1,37 @@
+# LOGS FILES:
+*.log
+
+# DEPENDENCIES DIRECTORIES:
+node_modules/
+jspm_packages/
+
+# FRONTEND:
+/dist/
+/tmp/
+/out-tsc/
+
+# ANGULAR CACHE:
+frontend/.angular/cache/*
+
+# IDE - VISUAL STUDIO CODE:
+.vscode/*
+frontend/.vscode/*
+frontend/!.vscode/settings.json
+frontend/!.vscode/tasks.json
+frontend/!.vscode/launch.json
+frontend/!.vscode/extensions.json
+frontend/.history/*
+
+# MISC:
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# SYSTEM FILES:
+.DS_Store
+Thumbs.db

@@ -1,0 +1,102 @@
+<div *ngIf="sharedProp.isLogged">
+<div class="second-toolbar text-left" *ngIf="sharedProp.action.content_title">
+
+  <mat-toolbar class="main-toolbar" color="primary">
+    <img class="logo" src="../assets/img/logo_horizontal.png" routerLink="/start" />
+  
+    <span class="mat-spacer"></span>
+  
+    <span>&nbsp;</span>
+
+    <span class="mat-spacer"></span>
+
+    <button mat-button [matMenuTriggerFor]="userMenu" aria-label="Opciones de usuario">
+      <mat-icon>person</mat-icon>&nbsp;
+      <span class="user_info">
+        <small matTooltip="Usuario">{{ sharedProp.userLogged.name | titlecase }} {{ sharedProp.userLogged.surname | titlecase }}</small>
+        &nbsp; ► &nbsp;
+        <span [ngSwitch]="sharedProp.userLogged.permissions[0].type">
+          <span *ngSwitchCase="'organization'">
+            <small matTooltip="Organización">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+          </span>
+          <span *ngSwitchCase="'branch'">
+            <small matTooltip="Sucursal">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+          </span>
+          <span *ngSwitchCase="'service'">
+            <small matTooltip="Servicio">{{ sharedProp.userLogged.permissions[0].description }}</small> &nbsp;
+          </span>
+        </span>
+      </span>
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    
+    <mat-menu #userMenu="matMenu" xPosition="before">
+      <button mat-menu-item routerLink="/start">
+        <mat-icon>logout</mat-icon><span>Cerrar sesión</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+</div>
+
+<div *ngIf="sharedProp.action.filters_form">
+  <div class="main-action" fxLayout="row" fxLayoutAlign="start center">
+    <div class="filters"> <!-- start fxLayout wrapper -->
+      <mat-form-field appearance="outline" *ngIf="sharedProp.action.filters.date_range">
+        <mat-label>Seleccione rango de fechas</mat-label>
+        <mat-date-range-input [rangePicker]="picker" (click)="picker.open()">
+          <input matStartDate [(ngModel)]="sharedProp.date_range.start" readonly placeholder="Fecha inicio">
+          <input matEndDate [(ngModel)]="sharedProp.date_range.end" readonly placeholder="Fecha fin">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker (closed)="onSearch();"></mat-date-range-picker>
+      </mat-form-field>
+
+      <!-- reset seach -->
+      <button mat-flat-button color="primary" class="button_filters" (click)="onSearch(1, true);" *ngIf="sharedProp.action.filters.clear_filters">
+        <mat-icon>cleaning_services</mat-icon>&nbsp; LIMPIAR BÚSQUEDA
+      </button>
+    </div> <!-- end fxLayout wrapper -->
+
+    <span class="mat-spacer"></span>
+
+    <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+    <!-- PAGER -->
+    <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+    <div *ngIf="sharedProp.action.filters.pager && sharedFunctions.response.pager"> <!-- start fxLayout wrapper -->
+      <div class="pager">
+        <div class="pager-info divider-alt">
+          Total: {{ sharedFunctions.response.pager.total_items }} <br/>
+          Mostrados: {{ sharedFunctions.response.pager.viewed_items }} <br/>
+          <hr class="dashed" />
+          <div>
+            <mat-icon class="pager-arrows" (click)="prevPage(sharedFunctions.response.pager);" [class.pager-disabled]="sharedFunctions.response.pager.actual_page === 1">chevron_left</mat-icon>
+            <mat-icon class="pager-disabled">remove</mat-icon>
+            <mat-icon class="pager-arrows" (click)="nextPage(sharedFunctions.response.pager);" [class.pager-disabled]="sharedFunctions.response.pager.actual_page === sharedFunctions.response.pager.number_of_pages">chevron_right</mat-icon>
+          </div>
+        </div>
+
+        <div class="pager-select">
+          Página
+          <mat-form-field class="pager-input" appearance="standard">
+            <mat-select class="pager-input-select" [(ngModel)]="sharedFunctions.response.pager.actual_page" (selectionChange)="onSearch(sharedFunctions.response.pager.actual_page);">
+              <mat-option *ngFor="let currentPage of counterPages(sharedFunctions.response.pager.number_of_pages);" [value]="currentPage">{{ currentPage }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          de {{ sharedFunctions.response.pager.number_of_pages }}
+          <br/>
+          Items por página:
+          <mat-form-field class="pager-input" appearance="standard" style="margin-top: -17px;">
+            <mat-select class="pager-input-select" [(ngModel)]="sharedFunctions.response.pager.items_per_page" (selectionChange)="setPageLimit(sharedFunctions.response.pager.items_per_page);">
+              <mat-option *ngFor="let currentSize of page_sizes" [value]="currentSize">{{ currentSize }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="clear"></div>
+      </div>
+    </div>
+    <!-- ------------------------------------------------------------------------------------------------------------------------ -->
+
+  </div>
+</div>
+</div>

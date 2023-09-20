@@ -1,0 +1,48 @@
+.form-content {
+    padding: 20px;
+}
+
+.logo {
+    max-width: 150px !important;
+    max-height: 100% !important;
+    opacity: 0.95;
+}
+
+.form-disclaimer {
+    background-color: #efefef;
+    padding: 20px 10px 10px 10px;
+    border-radius: 5px 5px 0px 0px;
+    border-bottom: 2px solid;
+    -o-border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+       border-image: linear-gradient(to right, #743ad5 0%, #d53a9d 100%);
+    border-image-slice: 1;
+}
+
+.disclaimer-title {
+    margin-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
+
+.form-element {
+    margin: 0px !important;
+}
+
+.action-wrapper {
+    background-color: #efefef !important;
+    border-top: 2px solid;
+    -o-border-image: linear-gradient(to right, #733ad57d 0%, #d53a9c80 100%);
+       border-image: linear-gradient(to right, #733ad57d 0%, #d53a9c80 100%);
+    border-image-slice: 1;
+}
+
+.validate-info {
+  position: relative;
+  top: -14px !important;
+  margin-bottom: 5px !important;
+}
+
+.validate-icon {
+  position: relative;
+  top: 7px !important;
+}

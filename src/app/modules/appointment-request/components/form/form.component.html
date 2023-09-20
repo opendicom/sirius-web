@@ -1,0 +1,217 @@
+<script src="https://www.google.com/recaptcha/api.js?render=reCAPTCHA_site_key"></script>
+
+<div class="form-content">
+    <div class="form-header text-center">
+        <img class="logo" src="../../../../assets/img/logo.png" alt="Sirius Web" (click)="onLogin()">
+        <h1>Formulario de solicitud de estudio</h1>
+        <br/>
+    </div>
+
+    <div class="form-disclaimer">
+        <strong class="disclaimer-title">IMPORTANTE:</strong>
+        <ul>
+            <li>Los datos que se solicitan en este formulario deben ser completados por el <strong>Médico Tratante</strong> del paciente.</li>
+            <li>El Médico se hace responsable, con su firma, de un documento de carácter médico-legal.</li>
+        </ul>
+    </div>
+
+    <form class="form-element" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div fxLayout="row" fxLayoutAlign="start start">
+
+            <div class="input-wrapper divider-alt"> <!-- start fxLayout wrapper -->
+
+                <!-- STUDY DATA: ---------------------------------------------------------------------------------------------------------------- -->
+                <div formGroupName="study">
+                    <h4>Tipo de estudio:</h4>
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Tipo de estudio</mat-label>
+                        <mat-select formControlName="modality" placeholder="Seleccione el tipo de estudio">
+                            <div *ngFor="let currentModality of modalitiesList | keyvalue">
+                                <mat-option value="{{ currentModality.key }}">{{ currentModality.value }}</mat-option>
+                            </div>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <!-- STUDY DATA: ---------------------------------------------------------------------------------------------------------------- -->
+
+                <h4>Urgencia:</h4>
+                <mat-radio-group aria-label="Urgencia" color="primary" formControlName="urgency">
+                    <mat-radio-button value="true">Si</mat-radio-button>
+                    <mat-radio-button value="false">No</mat-radio-button>
+                </mat-radio-group>
+
+                <br/><br/>
+
+                <!-- PATIENT DATA: -------------------------------------------------------------------------------------------------------------- -->
+                <div formGroupName="patient">
+                    <h2 class="form-title text-center underline-fail-alt">Datos del paciente:</h2>
+                    
+                    <div class="documents">
+                        <h4>Documento:</h4>
+                        <mat-form-field appearance="fill" class="full document_inputs">
+                            <mat-label>País del documento</mat-label>
+                            <mat-select formControlName="doc_country_code">
+                            <div *ngFor="let currentCode of getKeys(country_codes, true)">
+                                <mat-option value="{{ currentCode }}"><span class="flag-icon flag-icon-{{ country_codes[currentCode].alpha_2 | lowercase }}"></span>&nbsp;&nbsp;&nbsp;{{ country_codes[currentCode].name }}</mat-option>
+                            </div>
+                            </mat-select>
+                        </mat-form-field>
+            
+                        <br/>
+                    
+                        <mat-form-field appearance="fill" class="full document_inputs">
+                            <mat-label>Tipo de documento</mat-label>
+                            <mat-select formControlName="doc_type">
+                            <div *ngFor="let currentDocType of document_types | keyvalue">
+                                <mat-option value="{{ currentDocType.key }}">{{ currentDocType.value }}</mat-option>
+                            </div>
+                            </mat-select>
+                        </mat-form-field>
+                    
+                        <br/>
+                    
+                        <mat-form-field appearance="fill" class="full document_inputs">
+                            <mat-label>Número de documento</mat-label>
+                            <input matInput type="text" formControlName="document" placeholder="Ingrese el documento" (keyup)="validateDocument()">
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngIf="this.registered_doc_type === true" class="validate-info text-right">
+                        <div *ngIf="this.validation_result; then thenBlock else elseBlock"></div>
+                        <ng-template #thenBlock><span class="label-accent" matTooltip="El documento ingresado cumple con la validación.">Validación de documento: <mat-icon class="validate-icon color-ok">done</mat-icon></span></ng-template>
+                        <ng-template #elseBlock><span class="label-accent" matTooltip="El documento ingresado NO cumple con la validación.">Validación de documento: <mat-icon class="validate-icon color-fail">clear</mat-icon></span></ng-template>
+                    </div>
+                
+                    <div class="clear"></div>
+                    <hr class="dashed" /><br/>
+                
+                    <h4>Nombres:</h4>
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Primer nombre</mat-label>
+                        <input matInput icSpecialCharsWS type="text" formControlName="name_01" placeholder="Ingrese el primer nombre">
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Segundo nombre</mat-label>
+                        <input matInput icSpecialCharsWS type="text" formControlName="name_02" placeholder="Ingrese el segundo nombre">
+                    </mat-form-field>
+                
+                    <br/>
+                
+                    <h4>Apellidos:</h4>
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Primer apellido</mat-label>
+                        <input matInput icSpecialCharsWS type="text" formControlName="surname_01" placeholder="Ingrese el primer apellido">
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Segundo apellido</mat-label>
+                        <input matInput icSpecialCharsWS type="text" formControlName="surname_02" placeholder="Ingrese el segundo apellido">
+                    </mat-form-field>
+                
+                    <hr class="dashed" /><br/>
+                
+                    <h4>Género:</h4>
+                    <mat-radio-group aria-label="Género" color="primary" formControlName="gender">
+                        <mat-radio-button [class.validate-error]="genderCheckErrors === true" (change)="genderCheckErrors = false" *ngFor="let currentGender of genderTypes | keyvalue;" value="{{ currentGender.key }}">{{ currentGender.value }}</mat-radio-button>
+                    </mat-radio-group>
+            
+                    <br/><br/><br/>
+                        
+                    <h4>Fecha de nacimiento:</h4>
+                    <mat-form-field appearance="fill" class="full" (click)="picker.open()">
+                        <mat-label>Seleccione fecha</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="birth_date" (keydown)="false">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-hint align="end">Click para selecionar una fecha ^</mat-hint>
+                    </mat-form-field>
+                
+                    <br/><br/><hr class="dashed" /><br/>
+                
+                    <h4>Teléfono de contacto:</h4>
+                        <mat-form-field appearance="fill" class="full">
+                        <mat-label>Número de teléfono</mat-label>
+                        <input matInput icNumbers type="text" formControlName="phone_numbers[0]" placeholder="Ingrese el número de teléfono">
+                        <mat-icon matSuffix>phone</mat-icon>
+                        <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+                    </mat-form-field>
+            
+                    <br/><br/>
+            
+                    <h4>Contacto alternativo:</h4>
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Número de teléfono</mat-label>
+                        <input matInput icNumbers type="text" formControlName="phone_numbers[1]" placeholder="Ingrese el número de teléfono alternativo">
+                        <mat-icon matSuffix>phone</mat-icon>
+                        <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+                    </mat-form-field>
+            
+                        
+                </div>
+                <!-- PATIENT DATA: -------------------------------------------------------------------------------------------------------------- -->
+
+                <br/><br/>
+            </div> <!-- end fxLayout wrapper -->
+
+            <div class="input-wrapper"> <!-- start fxLayout wrapper -->
+                
+                <!-- PHYSICIAN DATA: ------------------------------------------------------------------------------------------------------------ -->
+                <div formGroupName="extra">
+                    <h2 class="form-title text-center underline-fail-alt">Datos del médico solicitante:</h2>
+
+                    <h4>Número de caja:</h4>
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Número de caja</mat-label>
+                        <input matInput icNumbers type="text" formControlName="physician_prof_id" placeholder="Ingrese el número de caja">
+                    </mat-form-field>
+
+                    <h4>Documento:</h4>
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Documento</mat-label>
+                        <input matInput type="text" formControlName="physician_id" placeholder="Ingrese el documento">
+                    </mat-form-field>
+
+                    <h4>Nombre completo:</h4>
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Nombre completo</mat-label>
+                        <input matInput icSpecialCharsWS type="text" formControlName="physician_name" placeholder="Ingrese el nombre completo">
+                    </mat-form-field>
+
+                    <h4>Teléfono de contacto:</h4>
+                    <mat-form-field appearance="fill" class="full">
+                        <mat-label>Teléfono</mat-label>
+                        <input matInput icNumbers type="text" formControlName="physician_contact" placeholder="Ingrese el número de teléfono">
+                        <mat-icon matSuffix>phone</mat-icon>
+                        <mat-hint align="start">Escriba la característica regional en caso de ser necesario</mat-hint>
+                    </mat-form-field>
+                </div>
+                <!-- PHYSICIAN DATA: ------------------------------------------------------------------------------------------------------------ -->
+
+                <br/><br/>
+
+                <h2 class="form-title text-center underline-fail-alt">Detalles del estudio a solicitar:</h2>
+
+                <h4>Anamnesis <span class="label-info">min: 10, max: 1000</span>:</h4>
+                <div [class.unselected]="anamnesisValidator == false">
+                    <ckeditor formControlName="anamnesis" #anamnesis [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+                </div>
+
+                <br/><hr class="dashed" /><br/>
+
+                <h4>Indicaciones <span class="label-info">min: 10, max: 1000</span>:</h4>
+                <div [class.unselected]="indicationsValidator == false">
+                    <ckeditor formControlName="indications" #indications [editor]="customEditor" [config]="editorConfig" data=""></ckeditor>
+                </div>
+            </div> <!-- end fxLayout wrapper -->
+
+        </div>
+
+        <div class="action-wrapper"fxLayout="row" fxLayoutAlign="end center">
+            <div> <!-- start fxLayout wrapper -->
+            <button mat-flat-button type="button" (click)="onCancel();">CANCELAR</button>
+            <button mat-flat-button type="submit" color="primary" [disabled]="disabled_save_button">GUARDAR</button>
+            </div> <!-- end fxLayout wrapper -->
+        </div>
+    </form>
+</div>

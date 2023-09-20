@@ -1,0 +1,35 @@
+.form-element {
+  margin-left: 15%;
+  margin-top: 5%;
+  margin-bottom: 20px;
+  padding: 5% 5% 2% 5%;
+  width: 60%;
+  text-align: center;
+  opacity: 1 !important;
+}
+
+.form-element > img {
+  width: 40%;
+}
+
+.opacity-controller {
+  opacity: 0.8 !important;
+}
+
+.document-section {
+  background-color: #1e1e2f0c;
+  padding: 3% 1% 1% 1%;
+  border-radius: 5px;
+}
+
+.sub-element {
+  width: 70%;
+}
+
+.submit-button {
+  padding: .71em;
+}
+
+mat-form-field {
+  text-align: center;
+}

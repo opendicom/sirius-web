@@ -1,0 +1,50 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    //Path aliases definitions:
+    "paths": {
+      "@app/*"      : ["src/app/*"],
+      "@auth/*"     : ["src/app/auth/*"],
+      "@guards/*"   : ["src/app/guards/*"],
+      "@shared/*"   : ["src/app/shared/*"],
+      "@modules/*"  : ["src/app/modules/*"],
+      "@env/*"      : ["src/environments/*"],
+      "@assets/*"   : ["src/assets/*"],
+    },
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2020",
+      "dom"
+    ],
+
+    //To prevent 'This module can only be referenced with ECMAScript imports/exports' [html-to-pdfmake module]:
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true,
+
+    //To prevent 'This module can only be referenced with ECMAScript imports/exports' [html-to-pdfmake module]:
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  }
+}
