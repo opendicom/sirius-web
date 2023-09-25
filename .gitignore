@@ -5,22 +5,22 @@
 node_modules/
 jspm_packages/
 
-# FRONTEND:
+# BUILD:
 /dist/
 /tmp/
 /out-tsc/
 
 # ANGULAR CACHE:
-frontend/.angular/cache/*
+.angular/cache/*
 
 # IDE - VISUAL STUDIO CODE:
+
 .vscode/*
-frontend/.vscode/*
-frontend/!.vscode/settings.json
-frontend/!.vscode/tasks.json
-frontend/!.vscode/launch.json
-frontend/!.vscode/extensions.json
-frontend/.history/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
 
 # MISC:
 /.sass-cache

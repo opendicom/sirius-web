@@ -97,7 +97,8 @@ export class FormComponent implements OnInit {
         'gender'            : [ '', [Validators.required]],
         'birth_date'        : [ '', [Validators.required]],
         'phone_numbers[0]'  : [ '', [Validators.required]],
-        'phone_numbers[1]'  : [ '', []]
+        'phone_numbers[1]'  : [ '', []],
+        'email'             : [ '', [Validators.required]]
       }),
       
       //Extra data:
