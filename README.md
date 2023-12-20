@@ -1,4 +1,4 @@
-![logo_horizontal](./src/assets/img/logo_horizontal.png)
+![logo_horizontal](./img/logo_horizontal_github.png)
 
 
 
