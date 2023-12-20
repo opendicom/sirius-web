@@ -6,24 +6,28 @@ export const environment = {
   production: false
 };
 
+// Entry page:
+// start | signin
+export const entry_page = 'start';
+
 // Set ObjectId regular expression to validate ObjectIds:
 export const regexObjectId = /^[0-9a-fA-F]{24}$/;
 
 // Set machine user (For insert appontment requests):
 export const machine_user = {
   username : 'sirius_web',
-  password : 'clave.123'
+  password : 'password'
 };
 
 // 
 export const force_origin = {
-  'organization'  : '63adef4d6a897c00145903d3',
+  'organization'  : '',
   'branch'        : ''
 };
 
 // Set app default settings:
 export const app_setting = {
-  backend_url             : 'http://localhost:3000/',
+  backend_url             : 'https://localhost:80/',
   rabc_exclude_code       : 'exclude_code',
   secret_number           : 1618,    // Used on simple crypt
   file_max_size           : 10,      // Maximum size in MB allowed to upload files
@@ -45,9 +49,8 @@ export const app_setting = {
 
 // Modalities list:
 export const modalities_list = {
-  'PT'  : 'Tomografía por emisión de positrones',
-  'TC'  : 'Tomografía computarizada',
-  'RM'  : 'Resonancia magnética'
+  'PT'  : 'Tomografía por emisión de positrones (PET-CT)',
+  'CT'  : 'Tomografía computarizada',
 }
 
 // Document types:

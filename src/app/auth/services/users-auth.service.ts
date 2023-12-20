@@ -9,7 +9,7 @@ import { SharedFunctionsService } from '@shared/services/shared-functions.servic
 import { MatSnackBar } from '@angular/material/snack-bar';                              // SnackBar (Angular Material)
 import { Router } from '@angular/router';                                               // Router
 import { JwtHelperService } from "@auth0/angular-jwt";                                  // JWT Helper Service (Check JWT Expiration)
-import { machine_user } from '@env/environment';                                        // Enviroment
+import { machine_user, entry_page } from '@env/environment';                            // Enviroment
 //--------------------------------------------------------------------------------------------------------------------//
 
 //Create helper object:
@@ -227,7 +227,7 @@ export class UsersAuthService {
   userLogout(redirect: boolean = true): void{
     this.removeToken();
     if(redirect === true){
-      this.router.navigate(['/start']);
+      this.router.navigate(['/' + entry_page]);
     }
   }
   //--------------------------------------------------------------------------------------------------------------------//
