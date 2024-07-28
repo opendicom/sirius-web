@@ -19,11 +19,21 @@ export const machine_user = {
   password : 'password'
 };
 
-// 
+// Force origin:
 export const force_origin = {
   'organization'  : '',
   'branch'        : ''
 };
+
+// DNS Resolve:
+// false or object { ohif_location, ohif_dns, wezen_location, wezen_dns }
+export const dns_resolve = { 
+  ohif_location   : 'localhost:4000',
+  ohif_dns        : 'ohif-dns.com',
+  wezen_location  : 'localhost%3A2001',
+  wezen_dns       : 'wezen-dns.com%3A2001',
+};
+
 
 // Set app default settings:
 export const app_setting = {

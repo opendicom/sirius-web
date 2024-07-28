@@ -17,11 +17,10 @@
                     <mat-icon>description</mat-icon>
                 </button>
 
-                <!--view dicom in HTML
-                <button mat-icon-button aria-label="Ver imágenes asociadas" matTooltip="Ver imágenes asociadas" class="action_buttons">
+                <!--view dicom in HTML -->
+                <button mat-icon-button aria-label="Ver imágenes asociadas" (click)="getStudyDICOM(element._id)" matTooltip="Ver imágenes asociadas" class="action_buttons">
                     <mat-icon>visibility</mat-icon>
                 </button>
-                -->
 
                 <!--download dicom
                 <button mat-icon-button aria-label="Descargar imágenes" matTooltip="Descargar imágenes" class="action_buttons">

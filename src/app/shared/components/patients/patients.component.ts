@@ -13,7 +13,8 @@ import {                                                                        
   ISO_3166,
   document_types,
   performing_flow_states,
-  cancellation_reasons
+  cancellation_reasons,
+  dns_resolve
 } from '@env/environment';
 //--------------------------------------------------------------------------------------------------------------------//
 
@@ -28,6 +29,7 @@ export class PatientsComponent implements OnInit {
   public document_types         : any = document_types;
   public performing_flow_states : any = performing_flow_states;
   public cancellation_reasons   : any = cancellation_reasons;
+  private dns_resolve           : any = dns_resolve;
 
   //Set visible columns of the list:
   public displayedColumns: string[] = [
@@ -135,5 +137,32 @@ export class PatientsComponent implements OnInit {
 
     //First search (List):
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
+  }
+
+  getStudyDICOM(fk_performing: string){
+    //Request DICOM image query path:
+    this.sharedFunctions.wezenStudyToken(fk_performing, (wezenStudyTokenRes) => {
+      if(wezenStudyTokenRes.success === true){
+        //Set ohifPath:
+        let ohifPath = wezenStudyTokenRes.path;
+
+        if(this.dns_resolve !== false){
+          //Replace intranet server IP to DNS (Frontend URL):
+          ohifPath = ohifPath.replace(this.dns_resolve.ohif_location, this.dns_resolve.ohif_dns);
+
+          //Replace intranet server IP to DNS (Wezen):
+          ohifPath =  ohifPath.replace(this.dns_resolve.wezen_location, this.dns_resolve.wezen_dns);
+
+          //Open OHIF Viewer:
+          window.open(ohifPath, '_self');
+        } else {
+          //Open OHIF Viewer:
+          window.open(ohifPath, '_self');
+        }
+      } else {
+        //Send Console Warn Message:
+        console.warn('Error al intentar buscar las imágenes DICOM del elemento: ' + wezenStudyTokenRes.message);
+      }
+    });
   }
 }
