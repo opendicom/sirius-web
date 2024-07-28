@@ -1,6 +1,6 @@
 {
   "name": "sirius-web",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0",
   "description": "Sirius Web is a module to interact with Sirius Backend from a DMZ (for web use)",
   "author": "Camilo Pifano Herrera <camilopifano@gmail.com>",
   "maintainer": "opendicom <info@opendicom.com>",
