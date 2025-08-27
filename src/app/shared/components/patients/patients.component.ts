@@ -139,30 +139,65 @@ export class PatientsComponent implements OnInit {
     this.sharedFunctions.find(this.sharedProp.element, this.sharedProp.params);
   }
 
-  getStudyDICOM(fk_performing: string){
+  getStudyDICOM(fk_performing: string, accessType: string){
     //Request DICOM image query path:
-    this.sharedFunctions.wezenStudyToken(fk_performing, (wezenStudyTokenRes) => {
+    this.sharedFunctions.wezenStudyToken(fk_performing, accessType, (wezenStudyTokenRes) => {
       if(wezenStudyTokenRes.success === true){
-        //Set ohifPath:
-        let ohifPath = wezenStudyTokenRes.path;
+        //Switch by accessType:
+        switch(accessType){
+          case 'ohif':
+            //Set pathOHIF:
+            let pathOHIF = wezenStudyTokenRes.path;
 
-        if(this.dns_resolve !== false){
-          //Replace intranet server IP to DNS (Frontend URL):
-          ohifPath = ohifPath.replace(this.dns_resolve.ohif_location, this.dns_resolve.ohif_dns);
+            // Check DNS:
+            if(this.dns_resolve !== false){
+              //Replace intranet server IP to DNS (Frontend URL):
+              pathOHIF = pathOHIF.replace(this.dns_resolve.ohif_location, this.dns_resolve.ohif_dns);
 
-          //Replace intranet server IP to DNS (Wezen):
-          ohifPath =  ohifPath.replace(this.dns_resolve.wezen_location, this.dns_resolve.wezen_dns);
+              //Replace intranet server IP to DNS (Wezen):
+              pathOHIF =  pathOHIF.replace(this.dns_resolve.wezen_location, this.dns_resolve.wezen_dns);
 
-          //Open OHIF Viewer:
-          window.open(ohifPath, '_self');
-        } else {
-          //Open OHIF Viewer:
-          window.open(ohifPath, '_self');
-        }
+              //Open OHIF Viewer:
+              window.open(pathOHIF, '_self');
+            } else {
+              //Open OHIF Viewer:
+              window.open(pathOHIF, '_self');
+            }
+            break;
+
+          case 'dicom.zip':
+            //Set currentPath:
+            let pathZIP = wezenStudyTokenRes.path;
+
+            // Check DNS:
+            if(this.dns_resolve !== false){
+              //Replace intranet server IP to DNS (Frontend URL):
+              pathZIP = pathZIP.replace(this.dns_resolve.wezen_zip_location, this.dns_resolve.wezen_zip_dns);
+
+              //Dowload DICOM ZIP:
+              this.createJSlink(pathZIP);
+            } else {
+              //Dowload DICOM ZIP:
+              this.createJSlink(pathZIP);
+            }
+            break;
+        }        
       } else {
         //Send Console Warn Message:
         console.warn('Error al intentar buscar las imágenes DICOM del elemento: ' + wezenStudyTokenRes.message);
       }
     });
+  }
+
+  createJSlink(path: any){
+    // Create a link from Javascript:
+    // Prevent the Angular Router from handling the path when the click event is triggered.
+    const a = document.createElement('a');
+    a.href = path; //Set dicomZipURL:
+    a.rel = 'noopener';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 }

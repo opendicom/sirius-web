@@ -1364,9 +1364,9 @@ export class SharedFunctionsService {
   //--------------------------------------------------------------------------------------------------------------------//
   // WEZEN STUDY TOKEN:
   //--------------------------------------------------------------------------------------------------------------------//
-  wezenStudyToken(fk_performing: string, callback = (res: any) => {}): void {
+  wezenStudyToken(fk_performing: string, accessType: string = 'ohif', callback = (res: any) => {}): void {
     //Create observable obsFind:
-    const obsFind = this.apiClient.sendRequest('GET', 'wezen/studyToken', { fk_performing: fk_performing, accessType: 'ohif' });
+    const obsFind = this.apiClient.sendRequest('GET', 'wezen/studyToken', { fk_performing: fk_performing, accessType });
 
     //Observe content (Subscribe):
     obsFind.subscribe({
